@@ -137,8 +137,10 @@ class horizon(
   $help_url                = 'http://docs.openstack.org',
   $local_settings_template = 'horizon/local_settings.py.erb',
   $configure_apache        = true,
-  $bind_address            = '0.0.0.0',
+  $bind_address            = undef,
+  $servername              = $::fqdn,
   $listen_ssl              = false,
+  $ssl_redirect            = true,
   $horizon_cert            = undef,
   $horizon_key             = undef,
   $horizon_ca              = undef,
@@ -183,7 +185,9 @@ class horizon(
   if $configure_apache {
     class { 'horizon::wsgi::apache':
       bind_address => $bind_address,
+      servername   => $servername,
       listen_ssl   => $listen_ssl,
+      ssl_redirect => $ssl_redirect,
       horizon_cert => $horizon_cert,
       horizon_key  => $horizon_key,
       horizon_ca   => $horizon_ca,
